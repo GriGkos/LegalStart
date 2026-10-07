@@ -24,7 +24,7 @@
 
 Сайт собирается на Netlify; папка готовой сборки `dist` в GitHub не нужна. Страницы `/`, `/privacy` и `/terms` формируются существующим скриптом сборки.
 
-Исходники сайта перенесены из LegalStart-source.zip без изменений. Telegram-ссылка пока указывает на username `ADVOKAT_PROJECTBOT`: при необходимости замените `TELEGRAM_BOT_USERNAME` в `site/src/config.ts`. MAX-ссылка пока пустая. Старый адрес `chatgpt.site` в метаданных можно заменить после получения адреса нового сайта.
+Исходники сайта перенесены из LegalStart-source.zip без изменений. Telegram-ссылка пока указывает на username `ADVOKAT_PROJECTBOT`: при необходимости замените `TELEGRAM_BOT_USERNAME` в `site/src/config.ts`. MAX-кнопка ведёт на https://max.ru/se14597847_bot. Старый адрес `chatgpt.site` в метаданных можно заменить после получения адреса нового сайта.
 
 Локальный запуск и сборка сайта описаны в [site/README.md](site/README.md).
 

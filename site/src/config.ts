@@ -1,8 +1,8 @@
 export const PROJECT_NAME = 'LegalStart';
 // Замените на username настоящего бота без символа @.
 export const TELEGRAM_BOT_USERNAME = 'ADVOKAT_PROJECTBOT';
-// Ссылка будет добавлена после подключения бота в MAX.
-export const MAX_BOT_URL: string = '';
+// Адрес бота проекта в MAX.
+export const MAX_BOT_URL: string = 'https://max.ru/se14597847_bot';
 export const telegramUrl = (start = 'website') => `https://t.me/${TELEGRAM_BOT_USERNAME.replace(/^@/, '')}?start=${encodeURIComponent(start)}`;
 export const NAV_LINKS = [
   { label: 'Как работает', href: '#how-it-works' },
