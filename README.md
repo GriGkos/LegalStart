@@ -1,4 +1,33 @@
-# LegalStart — Telegram-бот
+# LegalStart
+
+В репозитории находятся сайт проекта и Telegram-бот.
+
+| Часть | Файлы | Размещение |
+|---|---|---|
+| Сайт React/Vite | `site/` | Netlify |
+| Telegram-бот | `bot.py`, `storage.py`, `requirements.txt` | Render |
+| Настройки размещения | `netlify.toml`, `render.yaml` | Каждый сервис использует свою конфигурацию |
+
+MAX-бот пока не включён. База хранится отдельно в Supabase.
+
+## Размещение сайта на Netlify
+
+В Netlify выберите импорт существующего проекта из GitHub и репозиторий **GriGkos/LegalStart**. Настройки уже записаны в корневом `netlify.toml`:
+
+- Base directory: `site`.
+- Build command: `npm run build`.
+- Publish directory: `dist` (относительно `site`, полный путь — `site/dist`).
+- Node.js: `24`.
+
+Сайт собирается на Netlify; папка готовой сборки `dist` в GitHub не нужна. Страницы `/`, `/privacy` и `/terms` формируются существующим скриптом сборки.
+
+Исходники сайта перенесены из LegalStart-source.zip без изменений. Telegram-ссылка пока указывает на username `ADVOKAT_PROJECTBOT`: при необходимости замените `TELEGRAM_BOT_USERNAME` в `site/src/config.ts`. MAX-ссылка пока пустая. Старый адрес `chatgpt.site` в метаданных можно заменить после получения адреса нового сайта.
+
+Локальный запуск и сборка сайта описаны в [site/README.md](site/README.md).
+
+Настройки Render остаются в корне: для Telegram-бота выберите этот же репозиторий и используйте `render.yaml`.
+
+## Telegram-бот
 
 Telegram-версия присланного MAX-бота. Здесь сохранены разделы «О проекте», «Как это работает», «Заполнить заявку» и FAQ, а также четыре вопроса анкеты. MAX-код и сайт не изменены.
 
@@ -122,3 +151,4 @@ Supabase Free приостанавливает проект после неде�
 - [Тарифы Supabase](https://supabase.com/pricing)
 
 После запуска сайта проверьте `TELEGRAM_BOT_USERNAME` в конфигурации LegalStart: он должен совпадать с username этого Telegram-бота. Отдельные сценарии для направлений по deep link пока не реализованы: аргументы `/start` открывают общее меню.
+
