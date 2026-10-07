@@ -1,4 +1,7 @@
 .env
+.env.*
+!.env.example
+!.env.max.example
 .venv/
 venv/
 __pycache__/

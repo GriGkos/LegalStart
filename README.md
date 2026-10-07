@@ -1,14 +1,17 @@
 # LegalStart
 
-В репозитории находятся сайт проекта и Telegram-бот.
+В репозитории находятся сайт проекта, Telegram-бот и MAX-бот.
 
 | Часть | Файлы | Размещение |
 |---|---|---|
-| Сайт React/Vite | `site/` | Netlify |
+| Сайт React/Vite | `site/` | Render Static Site / Netlify |
 | Telegram-бот | `bot.py`, `storage.py`, `requirements.txt` | Render |
+| MAX-бот | `max_bot.py`, `storage.py`, `requirements.txt` | Отдельный Render Web Service |
 | Настройки размещения | `netlify.toml`, `render.yaml` | Каждый сервис использует свою конфигурацию |
 
-MAX-бот пока не включён. База хранится отдельно в Supabase.
+База хранится отдельно в Supabase. [Настройка MAX-бота после модерации](README-MAX.md). Telegram и MAX запускаются отдельными сервисами; ID чатов и токены у них разные.
+
+Рабочий адрес сайта: https://legalstart-1.onrender.com/ . Для Render Static Site: Root Directory `site`, Build Command `npm ci && npm run build`, Publish Directory `dist`, `NODE_VERSION=24`.
 
 ## Размещение сайта на Netlify
 
