@@ -13,6 +13,20 @@ from sqlalchemy.engine import make_url
 from sqlalchemy.ext.asyncio import create_async_engine
 
 metadata = MetaData()
+
+
+def postgres_ssl_context(host: str | None) -> ssl.SSLContext:
+    context = ssl.create_default_context()
+    hostname = (host or "").lower().rstrip(".")
+    if (hostname.endswith(".pooler.supabase.com") or
+            (hostname.startswith("db.") and hostname.endswith(".supabase.co"))):
+        # Supabase's PostgreSQL endpoints use a private CA, absent from system
+        # trust stores. Add the published root while keeping hostname checks.
+        certificate = Path(__file__).resolve().parent / "certs" / "supabase-prod-ca-2021.crt"
+        context.load_verify_locations(cafile=str(certificate))
+    return context
+
+
 drafts = Table(
     "legalstart_drafts", metadata,
     Column("platform", String(80), primary_key=True),
@@ -62,7 +76,7 @@ class Store:
             sslmode = url.query.get("sslmode", "require")
             url = url.difference_update_query(["sslmode"])
             if sslmode != "disable":
-                connect_args["ssl"] = ssl.create_default_context()
+                connect_args["ssl"] = postgres_ssl_context(url.host)
         elif url.drivername != "sqlite+aiosqlite":
             raise ValueError("DATABASE_URL должен быть PostgreSQL или SQLite+aiosqlite")
         self.engine = create_async_engine(url, pool_pre_ping=True, hide_parameters=True,

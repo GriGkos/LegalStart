@@ -1,6 +1,7 @@
 """Offline checks: no real token, Telegram requests or personal data."""
 import tempfile
 import unittest
+import ssl
 from pathlib import Path
 from datetime import datetime, timezone
 
@@ -15,10 +16,29 @@ from sqlalchemy import select
 
 from bot import (ABOUT, FAQ, HOW, WELCOME, MAX_ANSWER, Notifier, Settings,
                  build_dispatcher, main_menu, webhook_app, WEBHOOK_PATH)
-from storage import Store, applications, events
+from storage import Store, applications, events, postgres_ssl_context
 
 TOKEN = "123456:OFFLINE_TEST_TOKEN_NOT_REAL"
 USER = {"id": 42, "is_bot": False, "first_name": "Тест", "username": "test_user"}
+
+
+class DatabaseTLSChecks(unittest.TestCase):
+    def test_supabase_root_is_trusted_with_hostname_verification(self):
+        certificate = (Path(__file__).parent / "certs" / "supabase-prod-ca-2021.crt").read_text()
+        root = ssl.PEM_cert_to_DER_cert(certificate)
+        for host in ("aws-0-eu-central-1.pooler.supabase.com", "db.example.supabase.co"):
+            context = postgres_ssl_context(host)
+            self.assertTrue(context.check_hostname)
+            self.assertEqual(context.verify_mode, ssl.CERT_REQUIRED)
+            self.assertIn(root, context.get_ca_certs(binary_form=True))
+
+    def test_other_database_hosts_use_only_system_trust(self):
+        baseline = ssl.create_default_context().get_ca_certs(binary_form=True)
+        for host in ("database.example.com", "pooler.supabase.com.attacker.example", None):
+            context = postgres_ssl_context(host)
+            self.assertTrue(context.check_hostname)
+            self.assertEqual(context.verify_mode, ssl.CERT_REQUIRED)
+            self.assertEqual(context.get_ca_certs(binary_form=True), baseline)
 
 
 class FakeSession(BaseSession):
